@@ -3,46 +3,67 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+  <link rel="stylesheet" href="./css/style.css">
   <title>Todo List</title>
 </head>
 <body>
   
   <main>
-    <form>
-      <label for="txtName">Name</label>
-      <input type="text" id="txtName" placeholder="Task name">
-      <label for="dpDate">Date</label>
-      <input type="date" id="dpDate">
-      <label for="slcPriority">Priority</label>
-      <select type="text" id="slcPriority">
-        <option value="low">Low</option>
-        <option value="medium">Medium</option>
-        <option value="high">High</option>
-      </select>
-      <button type="submit">Add</button>
-    </form>
+    <div>
+      <h2>Add new task</h2>
+      <form>
+        <label for="txtName">Name</label>
+        <input type="text" id="txtName" placeholder="Task name">
+        <label for="dpDate">Date</label>
+        <input type="date" id="dpDate">
+        <label for="slcPriority">Priority</label>
+        <select type="text" id="slcPriority">
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
+        <button type="submit">Add</button>
+      </form>
+    </div>
 
     <hr>
-    <form>
-      <label for="txtSearch">Search</label>
-      <input type="text" id="txtSearch" placeholder="Search task">
-      <label for="slcFilter">Filter by</label>
-      <select type="text" id="slcFilter">
-        <option value="low">Low</option>
-        <option value="medium">Medium</option>
-        <option value="high">High</option>
-        <option value="new">New</option>
-        <option value="completed">Completed</option>
-      </select>
-      <label for="slcStatus">Filter by</label>
-      <select type="text" id="slcStatus">
-        <option value="date1">Date (ascending)</option>
-        <option value="date2">Date (descending)</option>
-        <option value="name1">Name (ascending)</option>
-        <option value="name2">Name (descending)</option>
-      </select>
-      <button type="submit">Search</button>
-    </form>
+
+    <div>
+      <h2>Search task</h2>
+      <form>
+        <label for="txtSearch">Search</label>
+        <input type="text" id="txtSearch" placeholder="Search task">
+        <label for="slcFilter">Filter by</label>
+        <select type="text" id="slcFilter">
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+          <option value="new">New</option>
+          <option value="completed">Completed</option>
+        </select>
+        <label for="slcStatus">Filter by</label>
+        <select type="text" id="slcStatus">
+          <option value="date1">Date (ascending)</option>
+          <option value="date2">Date (descending)</option>
+          <option value="name1">Name (ascending)</option>
+          <option value="name2">Name (descending)</option>
+        </select>
+        <button type="submit">Search</button>
+      </form>
+    </div>
+
+    <div>
+      <h2>My task list</h2>
+      <ul>
+        <li>
+          <p>Taks 1</p>
+          <i class="fas fa-trash-alt"></i>
+        </li>
+      </ul>
+    </div>
   </main>
+
+  ;<script src="./js/app.js"></script>
 </body>
 </html>
