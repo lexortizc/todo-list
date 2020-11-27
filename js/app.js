@@ -13,21 +13,33 @@ const getTasks = () => {
 }
 
 const addTask = (task) => {
-  let tasks = getTasks();
+  const tasks = getTasks();
   tasks.push(task);
   localStorage.setItem('task', JSON.stringify(tasks));
 }
 
 const renderTasks = () => {
   taskList.innerHTML = '';
-  let tasks = getTasks();
+  const tasks = getTasks();
   tasks.forEach( task => {
     const item = `<li><p>${task.name}</p><i class="fas fa-trash-alt"></i></li>`;
     taskList.insertAdjacentHTML('beforeend', item);
   });
 }
 
-window.addEventListener('load', renderTasks());
+const validateTask = (task) => {
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  if(task.name === '' || task.date < today) return false
+
+  return true
+}
+
+window.addEventListener('load', () => {
+  const today = new Date();
+  document.querySelector('#dpDate').value = today.toISOString().slice(0,10);
+  renderTasks();
+});
 
 document.querySelector('#btnAdd').addEventListener('click', (e) => {
   e.preventDefault();
@@ -35,10 +47,14 @@ document.querySelector('#btnAdd').addEventListener('click', (e) => {
     name: document.querySelector('#txtName').value,
     priority: document.querySelector('#slcPriority').value,
     status: 'new',
-    date: document.querySelector('#dpDate').value,
+    date: new Date(document.querySelector('#dpDate').value + "T00:00")
   }
 
-  addTask(task);
-  renderTasks();
+  if(validateTask(task)) {
+    addTask(task);
+    renderTasks();
+  } else {
+    alert('Failed to register task');
+  }
   console.log(task);
 })
