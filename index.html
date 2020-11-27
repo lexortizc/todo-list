@@ -8,22 +8,22 @@
   <title>Todo List</title>
 </head>
 <body>
-  
+
   <main>
     <div>
       <h2>Add new task</h2>
       <form>
         <label for="txtName">Name</label>
         <input type="text" id="txtName" placeholder="Task name">
-        <label for="dpDate">Date</label>
-        <input type="date" id="dpDate">
         <label for="slcPriority">Priority</label>
         <select type="text" id="slcPriority">
           <option value="low">Low</option>
           <option value="medium">Medium</option>
           <option value="high">High</option>
         </select>
-        <button type="submit">Add</button>
+        <label for="dpDate">Date</label>
+        <input type="date" id="dpDate">
+        <button id="btnAdd" type="submit">Add</button>
       </form>
     </div>
 
@@ -55,7 +55,7 @@
 
     <div>
       <h2>My task list</h2>
-      <ul>
+      <ul id="task-list">
         <li>
           <p>Taks 1</p>
           <i class="fas fa-trash-alt"></i>
@@ -64,6 +64,6 @@
     </div>
   </main>
 
-  ;<script src="./js/app.js"></script>
+  <script src="./js/app.js"></script>
 </body>
 </html>
