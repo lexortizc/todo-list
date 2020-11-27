@@ -18,6 +18,13 @@ const addTask = (task) => {
   localStorage.setItem('task', JSON.stringify(tasks));
 }
 
+const deleteTask = (name) => {
+  let tasks = getTasks();
+  tasks = tasks.filter( task => task.name !== name)
+  localStorage.setItem('task', JSON.stringify(tasks));
+  console.log(tasks);
+}
+
 const renderTasks = () => {
   taskList.innerHTML = '';
   const tasks = getTasks();
@@ -58,3 +65,11 @@ document.querySelector('#btnAdd').addEventListener('click', (e) => {
   }
   console.log(task);
 })
+
+taskList.addEventListener('click', (e) => {
+  const item = e.target;
+  if(item.classList.contains('fa-trash-alt')) {
+    deleteTask(item.parentElement.firstChild.textContent);
+    item.parentElement.remove();
+  }
+});
