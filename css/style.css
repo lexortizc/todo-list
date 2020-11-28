@@ -27,7 +27,7 @@ hr {
   margin-top: 16px;
 }
 
-.table-opcs {
+.table-opts {
   display: flex;
   justify-content: space-evenly;
 }
@@ -54,6 +54,10 @@ hr {
   color: #d35d6e;
 }
 
-.bg-blue {
+.bg-new {
+  color: #898b8a;
+}
+
+.bg-completed {
   color: #03506f;
 }

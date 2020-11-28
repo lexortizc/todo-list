@@ -21,7 +21,14 @@ const addTask = (task) => {
 
 const deleteTask = (name) => {
   let tasks = getTasks();
-  tasks = tasks.filter( task => task.name !== name)
+  tasks = tasks.filter( task => task.name !== name )
+  localStorage.setItem('task', JSON.stringify(tasks));
+}
+
+const changeStatusTask = (name, status) => {
+  let tasks = getTasks();
+  const taskIndex = tasks.findIndex( task => task.name === name );
+  tasks[taskIndex].status = status;
   localStorage.setItem('task', JSON.stringify(tasks));
 }
 
@@ -33,8 +40,8 @@ const renderTasks = (tasks = getTasks()) => {
       <td class="priority-${task.priority}">${task.priority}</td>
       <td>${task.status}</td>
       <td>${task.date.slice(0,10)}</td>
-      <td class='table-opcs'>
-        <i class="fas fa-check-square bg-blue"></i>
+      <td class='table-opts'>
+        <i class="fas fa-check-square bg-${task.status}"></i>
         <i class="fas fa-trash-alt bg-red"></i>
       </td>
     </tr>`;
@@ -153,19 +160,24 @@ document.querySelector('#btnAdd').addEventListener('click', (e) => {
   } else {
     alert('Failed to register task');
   }
-  console.log(task);
 })
 
 taskList.addEventListener('click', (e) => {
-  const item = e.target;
-  if(item.classList.contains('fa-trash-alt')) {
-    deleteTask(item.parentElement.firstChild.textContent);
-    item.parentElement.remove();
+  const action = e.target;
+  const taskName = action.parentElement.parentElement.firstElementChild.textContent;
+
+  if(action.classList.contains('fa-trash-alt')) {
+    deleteTask(taskName);
+    action.parentElement.parentElement.remove();
+  }
+
+  if(action.classList.contains('fa-check-square')) {
+    changeStatusTask(taskName, 'completed');
+    applyFilters();
   }
 });
 
-document.querySelector('#btnSearch').addEventListener('click', (e) => {
-  e.preventDefault();
+const applyFilters = () => {
   const query = document.querySelector('#txtSearch').value;
   const filter = document.querySelector('#slcFilter').value;
   const sort = document.querySelector('#slcSort').value;
@@ -184,4 +196,9 @@ document.querySelector('#btnSearch').addEventListener('click', (e) => {
   }
 
   renderTasks(tasks);
+}
+
+document.querySelector('#btnSearch').addEventListener('click', (e) => {
+  e.preventDefault();
+  applyFilters();
 })
