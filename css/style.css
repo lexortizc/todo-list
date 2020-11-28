@@ -22,14 +22,24 @@ hr {
 
 }
 
-.task-items {
-  
+.task-table {
+  width: 100%;
+  margin-top: 16px;
 }
 
-.task-item {
-  list-style: none;
+.table-opcs {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
+}
+
+.task-table-header {
+  padding: 16px 0;
+  background: #31326f;
+  color: #FFF;
+}
+
+.task-item:nth-child(even) {
+  background: #dbf6e9;
 }
 
 .priority-low {
@@ -40,6 +50,10 @@ hr {
   color: #efb08c;
 }
 
-.priority-high {
+.priority-high, .bg-red {
   color: #d35d6e;
+}
+
+.bg-blue {
+  color: #03506f;
 }
