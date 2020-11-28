@@ -1,0 +1,45 @@
+/* Imports */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+
+/* initializing tags */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Open Sans', sans-serif;;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  padding: 16px;
+}
+
+hr {
+  margin: 16px;
+}
+
+.searching-section {
+
+}
+
+.task-items {
+  
+}
+
+.task-item {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+}
+
+.priority-low {
+  color: #61b15a;
+}
+
+.priority-medium {
+  color: #efb08c;
+}
+
+.priority-high {
+  color: #d35d6e;
+}

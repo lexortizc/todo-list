@@ -29,7 +29,7 @@ const renderTasks = () => {
   taskList.innerHTML = '';
   const tasks = getTasks();
   tasks.forEach( task => {
-    const item = `<li><p>${task.name}</p><i class="fas fa-trash-alt"></i></li>`;
+    const item = `<li class="task-item"><p class="priority-${task.priority}">${task.name}</p><i class="fas fa-trash-alt"></i></li>`;
     taskList.insertAdjacentHTML('beforeend', item);
   });
 }
