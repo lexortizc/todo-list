@@ -12,19 +12,46 @@
 body {
   font-family: 'Open Sans', sans-serif;
   padding: 16px;
+  max-width: 760px;
+  margin: auto;
 }
 
 hr {
   margin: 16px;
 }
 
-.searching-section {
+.title {
+  margin: 16px 0;
+}
 
+label {
+  font-weight: bold;
+}
+
+input, select {
+  padding: 4px;
+  margin: 4px;
+}
+
+.btn {
+  padding: 8px 16px;
+  min-width: 80px;
+  border: none;
+  border-radius: 4px;
+  background: #31326f;
+  color: #FFF;
 }
 
 .task-table {
   width: 100%;
-  margin-top: 16px;
+}
+
+.border-left {
+  border-radius: 8px 0px 0px 0px;
+}
+
+.border-right {
+  border-radius: 0px 8px 0px 0px;
 }
 
 .table-opts {
@@ -39,7 +66,11 @@ hr {
 }
 
 .task-item:nth-child(even) {
-  background: #dbf6e9;
+  background: #e8e8e8;
+}
+
+.table-cell {
+  padding: 8px 16px;
 }
 
 .priority-low {

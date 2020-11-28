@@ -36,11 +36,11 @@ const renderTasks = (tasks = getTasks()) => {
   taskList.innerHTML = '';
   tasks.forEach( task => {
     const item = `<tr class="task-item">
-      <td>${task.name}</td>
-      <td class="priority-${task.priority}">${task.priority}</td>
-      <td>${task.status}</td>
-      <td>${task.date.slice(0,10)}</td>
-      <td class='table-opts'>
+      <td class="table-cell ">${task.name}</td>
+      <td class="table-cell priority-${task.priority}">${task.priority}</td>
+      <td class="table-cell ">${task.status}</td>
+      <td class="table-cell ">${task.date.slice(0,10)}</td>
+      <td class="table-cell table-opts">
         <i class="fas fa-check-square bg-${task.status}"></i>
         <i class="fas fa-trash-alt bg-red"></i>
       </td>

@@ -11,7 +11,7 @@
 
   <main>
     <section class="adding-section">
-      <h2>Add new task</h2>
+      <h2 class="title">Add new task</h2>
       <form>
         <label for="txtName">Name</label>
         <input type="text" id="txtName" placeholder="Task name">
@@ -23,14 +23,14 @@
         </select>
         <label for="dpDate">Date</label>
         <input type="date" id="dpDate">
-        <button id="btnAdd" type="submit">Add</button>
+        <button id="btnAdd" class="btn" type="submit">Add</button>
       </form>
     </section>
 
     <hr>
 
     <section class="searching-section">
-      <h2>Search task</h2>
+      <h2 class="title">Search task</h2>
       <form>
         <label for="txtSearch">Search</label>
         <input type="text" id="txtSearch" placeholder="Search task">
@@ -51,23 +51,22 @@
           <option value="nameAsc">Name (ascending)</option>
           <option value="nameDes">Name (descending)</option>
         </select>
-        <button id="btnSearch" type="submit">Search</button>
+        <button id="btnSearch" class="btn" type="submit">Search</button>
       </form>
     </section>
 
     <hr>
 
     <section class="tasks-section">
-      <h2>My task list</h2>
-      <!-- <ul id="task-list" class="task-items"></ul> -->
+      <h2 class="title">My task list</h2>
       <table class="task-table">
         <thead>
           <tr>
-            <th class="task-table-header">Task</th>
+            <th class="task-table-header border-left">Task</th>
             <th class="task-table-header">Priority</th>
             <th class="task-table-header">Status</th>
             <th class="task-table-header">Dead Line</th>
-            <th class="task-table-header">Actions</th>
+            <th class="task-table-header border-right">Actions</th>
           </tr>
         </thead>
         <tbody id="task-list"></tbody>
