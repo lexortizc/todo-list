@@ -1,4 +1,5 @@
 const taskList = document.querySelector('#task-list');
+const dpDate = document.querySelector('#dpDate');
 
 const getTasks = () => {
   let tasks;
@@ -22,14 +23,11 @@ const deleteTask = (name) => {
   let tasks = getTasks();
   tasks = tasks.filter( task => task.name !== name)
   localStorage.setItem('task', JSON.stringify(tasks));
-  console.log(tasks);
 }
 
-const renderTasks = () => {
+const renderTasks = (tasks = getTasks()) => {
   taskList.innerHTML = '';
-  const tasks = getTasks();
   tasks.forEach( task => {
-    // const item = `<li class="task-item"><p class="priority-${task.priority}">${task.name}</p><i class="fas fa-trash-alt"></i></li>`;
     const item = `<tr class="task-item">
       <td>${task.name}</td>
       <td class="priority-${task.priority}">${task.priority}</td>
@@ -44,6 +42,86 @@ const renderTasks = () => {
   });
 }
 
+const searchTask = (tasks, query) => {
+  const results = tasks.filter( task => task.name.toLowerCase().includes(query.toLowerCase()) )
+  return results;
+}
+
+const filterTasks = (tasks, filter) => {
+  const results = tasks.filter( task => task.priority === filter || task.status === filter )
+  return results;
+}
+
+const sortDateAsc = (tasks) => {
+  tasks.sort((a, b) => {
+    if (a.date > b.date) {
+      return 1;
+    }
+    if (a.date < b.date) {
+      return -1;
+    }
+    return 0;
+  });
+  return tasks;
+}
+
+const sortDateDes = (tasks) => {
+  tasks.sort((a, b) => {
+    if (a.date < b.date) {
+      return 1;
+    }
+    if (a.date > b.date) {
+      return -1;
+    }
+    return 0;
+  });
+  return tasks;
+}
+
+const sortNameAsc = (tasks) => {
+  tasks.sort((a, b) => {
+    if (a.name > b.name) {
+      return 1;
+    }
+    if (a.name < b.name) {
+      return -1;
+    }
+    return 0;
+  });
+  return tasks;
+}
+
+const sortNameDes = (tasks) => {
+  tasks.sort((a, b) => {
+    if (a.name < b.name) {
+      return 1;
+    }
+    if (a.name > b.name) {
+      return -1;
+    }
+    return 0;
+  });
+  return tasks;
+}
+
+const sortTasks = (tasks, sort) => {
+  switch (sort) {
+    case 'dateAsc':
+      tasks = sortDateAsc(tasks);
+      break;
+    case 'dateDes':
+      tasks = sortDateDes(tasks);
+      break;
+    case 'nameAsc':
+      tasks = sortNameAsc(tasks);
+      break;
+    case 'nameDes':
+      tasks = sortNameDes(tasks);
+      break;
+  }
+  return tasks;
+}
+
 const validateTask = (task) => {
   const today = new Date();
   today.setHours(0,0,0,0);
@@ -54,7 +132,9 @@ const validateTask = (task) => {
 
 window.addEventListener('load', () => {
   const today = new Date();
-  document.querySelector('#dpDate').value = today.toISOString().slice(0,10);
+  today.setHours(0,0,0,0);
+  dpDate.value = today.toISOString().slice(0,10);
+  dpDate.min = today.toISOString().slice(0,10);
   renderTasks();
 });
 
@@ -64,7 +144,7 @@ document.querySelector('#btnAdd').addEventListener('click', (e) => {
     name: document.querySelector('#txtName').value,
     priority: document.querySelector('#slcPriority').value,
     status: 'new',
-    date: new Date(document.querySelector('#dpDate').value + "T00:00")
+    date: new Date(dpDate.value + "T00:00")
   }
 
   if(validateTask(task)) {
@@ -83,3 +163,25 @@ taskList.addEventListener('click', (e) => {
     item.parentElement.remove();
   }
 });
+
+document.querySelector('#btnSearch').addEventListener('click', (e) => {
+  e.preventDefault();
+  const query = document.querySelector('#txtSearch').value;
+  const filter = document.querySelector('#slcFilter').value;
+  const sort = document.querySelector('#slcSort').value;
+
+  let tasks = getTasks();
+  if(query !== '') {
+    tasks = searchTask(tasks, query);
+  }
+
+  if(filter !== 'none') {
+    tasks = filterTasks(tasks, filter);
+  }
+
+  if(sort !== 'none') {
+    tasks = sortTasks(tasks, sort);
+  }
+
+  renderTasks(tasks);
+})
