@@ -25,9 +25,8 @@
         <input type="date" id="dpDate">
         <button id="btnAdd" class="btn" type="submit">Add</button>
       </form>
+      <hr>
     </section>
-
-    <hr>
 
     <section class="searching-section">
       <h2 class="title">Search task</h2>
@@ -53,9 +52,27 @@
         </select>
         <button id="btnSearch" class="btn" type="submit">Search</button>
       </form>
+      <hr>
     </section>
 
-    <hr>
+    <section class="updating-section hide">
+      <h2 class="title">Edit task</h2>
+      <form>
+        <input type="hidden" id="txtUpdateIndex" >
+        <label for="txtName">Name</label>
+        <input type="text" id="txtUpdateName" placeholder="Task name">
+        <label for="slcUpdatePriority">Priority</label>
+        <select type="text" id="slcUpdatePriority">
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
+        <label for="dpUpdateDate">Date</label>
+        <input type="date" id="dpUpdateDate">
+        <button id="btnUpdate" class="btn" type="submit">Update</button>
+      </form>
+      <hr>
+    </section>
 
     <section class="tasks-section">
       <h2 class="title">My task list</h2>

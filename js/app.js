@@ -1,5 +1,7 @@
 const taskList = document.querySelector('#task-list');
-const dpDate = document.querySelector('#dpDate');
+const dpAddDate = document.querySelector('#dpDate');
+const dpUpdateDate = document.querySelector('#dpUpdateDate');
+
 
 const getTasks = () => {
   let tasks;
@@ -19,9 +21,27 @@ const addTask = (task) => {
   localStorage.setItem('task', JSON.stringify(tasks));
 }
 
+const autocompleteTask = (name) => {
+  let tasks = getTasks();
+  const task = tasks.find( task => task.name === name );
+  const index = tasks.indexOf(task);
+
+  document.querySelector('#txtUpdateIndex').value = index;
+  document.querySelector('#txtUpdateName').value = task.name;
+  document.querySelector('#slcUpdatePriority').value = task.priority;
+  dpUpdateDate.value = task.date.slice(0,10);
+}
+
+const updateTask = (task) => {
+  const index = document.querySelector('#txtUpdateIndex').value;
+  let tasks = getTasks();
+  tasks[index] = task;
+  localStorage.setItem('task', JSON.stringify(tasks));
+}
+
 const deleteTask = (name) => {
   let tasks = getTasks();
-  tasks = tasks.filter( task => task.name !== name )
+  tasks = tasks.filter( task => task.name !== name );
   localStorage.setItem('task', JSON.stringify(tasks));
 }
 
@@ -42,6 +62,7 @@ const renderTasks = (tasks = getTasks()) => {
       <td class="table-cell ">${task.date.slice(0,10)}</td>
       <td class="table-cell table-opts">
         <i class="fas fa-check-square bg-${task.status}"></i>
+        <i class="fas fa-pencil-alt bg-orange"></i>
         <i class="fas fa-trash-alt bg-red"></i>
       </td>
     </tr>`;
@@ -140,8 +161,9 @@ const validateTask = (task) => {
 window.addEventListener('load', () => {
   const today = new Date();
   today.setHours(0,0,0,0);
-  dpDate.value = today.toISOString().slice(0,10);
-  dpDate.min = today.toISOString().slice(0,10);
+  dpAddDate.value = today.toISOString().slice(0,10);
+  dpAddDate.min = today.toISOString().slice(0,10);
+  dpUpdateDate.min = today.toISOString().slice(0,10);
   renderTasks();
 });
 
@@ -151,7 +173,7 @@ document.querySelector('#btnAdd').addEventListener('click', (e) => {
     name: document.querySelector('#txtName').value,
     priority: document.querySelector('#slcPriority').value,
     status: 'new',
-    date: new Date(dpDate.value + "T00:00")
+    date: new Date(dpAddDate.value + "T00:00")
   }
 
   if(validateTask(task)) {
@@ -162,19 +184,46 @@ document.querySelector('#btnAdd').addEventListener('click', (e) => {
   }
 })
 
+document.querySelector('#btnUpdate').addEventListener('click', (e) => {
+  e.preventDefault();
+  const task = {
+    name: document.querySelector('#txtUpdateName').value,
+    priority: document.querySelector('#slcUpdatePriority').value,
+    status: 'new',
+    date: new Date(dpUpdateDate.value + "T00:00")
+  }
+
+  if(validateTask(task)) {
+    document.querySelector('.updating-section').classList.toggle('hide');
+    updateTask(task);
+    renderTasks();
+  } else {
+    alert('Failed to register task');
+  }
+})
+
 taskList.addEventListener('click', (e) => {
+  console.log(e.target);
   const action = e.target;
   const taskName = action.parentElement.parentElement.firstElementChild.textContent;
-
-  if(action.classList.contains('fa-trash-alt')) {
-    deleteTask(taskName);
-    action.parentElement.parentElement.remove();
-  }
 
   if(action.classList.contains('fa-check-square')) {
     changeStatusTask(taskName, 'completed');
     applyFilters();
   }
+
+  if(action.classList.contains('fa-pencil-alt')) {
+    document.querySelector('.updating-section').classList.toggle('hide');
+    autocompleteTask(taskName);
+  }
+
+  if(action.classList.contains('fa-trash-alt')) {
+    if ( confirm("Are you sure?") ) {
+      deleteTask(taskName);
+      action.parentElement.parentElement.remove();
+    }
+  }
+
 });
 
 const applyFilters = () => {

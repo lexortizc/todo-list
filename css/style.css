@@ -77,8 +77,8 @@ input, select {
   color: #61b15a;
 }
 
-.priority-medium {
-  color: #efb08c;
+.priority-medium, .bg-orange {
+  color: #f88f01;
 }
 
 .priority-high, .bg-red {
@@ -91,4 +91,8 @@ input, select {
 
 .bg-completed {
   color: #03506f;
+}
+
+.hide {
+  display: none;
 }
