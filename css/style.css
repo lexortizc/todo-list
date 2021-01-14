@@ -85,11 +85,11 @@ input, select {
   color: #d35d6e;
 }
 
-.bg-new {
+.bg-new, .bg-updated {
   color: #898b8a;
 }
 
-.bg-completed {
+.bg-completed, .bg-blue {
   color: #03506f;
 }
 

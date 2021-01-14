@@ -1,7 +1,8 @@
 const taskList = document.querySelector('#task-list');
 const dpAddDate = document.querySelector('#dpDate');
 const dpUpdateDate = document.querySelector('#dpUpdateDate');
-
+const today = new Date();
+      today.setHours(0,0,0,0);
 
 const getTasks = () => {
   let tasks;
@@ -37,6 +38,7 @@ const updateTask = (task) => {
   let tasks = getTasks();
   tasks[index] = task;
   localStorage.setItem('task', JSON.stringify(tasks));
+  applyFilters();
 }
 
 const deleteTask = (name) => {
@@ -52,14 +54,32 @@ const changeStatusTask = (name, status) => {
   localStorage.setItem('task', JSON.stringify(tasks));
 }
 
+const isUpToDate = (date) => {
+  const taskDate = new Date(date);
+  taskDate.setHours(0,0,0,0);
+
+  if(taskDate >= today) return true
+  else return false
+}
+
+const timeLeft = (date) => {
+  const taskDate = new Date(date);
+  taskDate.setHours(0,0,0,0);
+
+  const days = taskDate.getDate() - today.getDate();
+  if(taskDate > today) return `<span class="bg-orange">${days} day(s) left</span>`
+  else if(days === 0) return `<span class="bg-red">today</span>`
+  else return `<span class="bg-blue">time reached</span>`;
+}
+
 const renderTasks = (tasks = getTasks()) => {
   taskList.innerHTML = '';
   tasks.forEach( task => {
     const item = `<tr class="task-item">
       <td class="table-cell ">${task.name}</td>
       <td class="table-cell priority-${task.priority}">${task.priority}</td>
-      <td class="table-cell ">${task.status}</td>
-      <td class="table-cell ">${task.date.slice(0,10)}</td>
+      <td class="table-cell ">${(isUpToDate(task.date)) ? task.status : `<span class="bg-red">deferred</span>`}</td>
+      <td class="table-cell ">${task.date.slice(0,10)}, ${timeLeft(task.date)}</td>
       <td class="table-cell table-opts">
         <i class="fas fa-check-square bg-${task.status}"></i>
         <i class="fas fa-pencil-alt bg-orange"></i>
@@ -151,16 +171,11 @@ const sortTasks = (tasks, sort) => {
 }
 
 const validateTask = (task) => {
-  const today = new Date();
-  today.setHours(0,0,0,0);
   if(task.name === '' || task.date < today) return false
-
   return true
 }
 
 window.addEventListener('load', () => {
-  const today = new Date();
-  today.setHours(0,0,0,0);
   dpAddDate.value = today.toISOString().slice(0,10);
   dpAddDate.min = today.toISOString().slice(0,10);
   dpUpdateDate.min = today.toISOString().slice(0,10);
@@ -189,7 +204,7 @@ document.querySelector('#btnUpdate').addEventListener('click', (e) => {
   const task = {
     name: document.querySelector('#txtUpdateName').value,
     priority: document.querySelector('#slcUpdatePriority').value,
-    status: 'new',
+    status: 'updated',
     date: new Date(dpUpdateDate.value + "T00:00")
   }
 
@@ -203,7 +218,6 @@ document.querySelector('#btnUpdate').addEventListener('click', (e) => {
 })
 
 taskList.addEventListener('click', (e) => {
-  console.log(e.target);
   const action = e.target;
   const taskName = action.parentElement.parentElement.firstElementChild.textContent;
 
@@ -221,6 +235,7 @@ taskList.addEventListener('click', (e) => {
     if ( confirm("Are you sure?") ) {
       deleteTask(taskName);
       action.parentElement.parentElement.remove();
+      applyFilters();
     }
   }
 
