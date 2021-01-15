@@ -85,7 +85,7 @@ input, select {
   color: #d35d6e;
 }
 
-.bg-new, .bg-updated {
+.bg-new, .bg-updated, .bg-deferred {
   color: #898b8a;
 }
 

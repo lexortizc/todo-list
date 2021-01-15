@@ -23,11 +23,10 @@ const addTask = (task) => {
 }
 
 const autocompleteTask = (name) => {
-  let tasks = getTasks();
+  const tasks = getTasks();
   const task = tasks.find( task => task.name === name );
-  const index = tasks.indexOf(task);
 
-  document.querySelector('#txtUpdateIndex').value = index;
+  document.querySelector('#txtUpdateIndex').value = tasks.indexOf(task);
   document.querySelector('#txtUpdateName').value = task.name;
   document.querySelector('#slcUpdatePriority').value = task.priority;
   dpUpdateDate.value = task.date.slice(0,10);
@@ -38,7 +37,6 @@ const updateTask = (task) => {
   let tasks = getTasks();
   tasks[index] = task;
   localStorage.setItem('task', JSON.stringify(tasks));
-  applyFilters();
 }
 
 const deleteTask = (name) => {
@@ -54,12 +52,20 @@ const changeStatusTask = (name, status) => {
   localStorage.setItem('task', JSON.stringify(tasks));
 }
 
-const isUpToDate = (date) => {
-  const taskDate = new Date(date);
+const isUpToDate = (task) => {
+  const taskDate = new Date(task.date);
   taskDate.setHours(0,0,0,0);
 
-  if(taskDate >= today) return true
-  else return false
+  if(taskDate < today && (task.status === 'new' || task.status === 'updated')) {
+    const tasks = getTasks();
+    const newTask = tasks.find( t => t.name === task.name );
+    document.querySelector('#txtUpdateIndex').value = tasks.indexOf(newTask);
+    task.status = 'deferred';
+    updateTask(task);
+  }
+
+  if(task.status === 'deferred') return `<span class="bg-red">${task.status}</span>`;
+  return task.status;
 }
 
 const timeLeft = (date) => {
@@ -78,7 +84,7 @@ const renderTasks = (tasks = getTasks()) => {
     const item = `<tr class="task-item">
       <td class="table-cell ">${task.name}</td>
       <td class="table-cell priority-${task.priority}">${task.priority}</td>
-      <td class="table-cell ">${(isUpToDate(task.date)) ? task.status : `<span class="bg-red">deferred</span>`}</td>
+      <td class="table-cell ">${ isUpToDate(task) }</td>
       <td class="table-cell ">${task.date.slice(0,10)}, ${timeLeft(task.date)}</td>
       <td class="table-cell table-opts">
         <i class="fas fa-check-square bg-${task.status}"></i>
@@ -175,8 +181,12 @@ const validateTask = (task) => {
   return true
 }
 
+const resetForm = () => {
+  document.querySelector('#form-add-task').reset();
+}
+
 window.addEventListener('load', () => {
-  dpAddDate.value = today.toISOString().slice(0,10);
+  dpAddDate.defaultValue = today.toISOString().slice(0,10);
   dpAddDate.min = today.toISOString().slice(0,10);
   dpUpdateDate.min = today.toISOString().slice(0,10);
   renderTasks();
@@ -194,6 +204,7 @@ document.querySelector('#btnAdd').addEventListener('click', (e) => {
   if(validateTask(task)) {
     addTask(task);
     renderTasks();
+    resetForm();
   } else {
     alert('Failed to register task');
   }
@@ -211,7 +222,7 @@ document.querySelector('#btnUpdate').addEventListener('click', (e) => {
   if(validateTask(task)) {
     document.querySelector('.updating-section').classList.toggle('hide');
     updateTask(task);
-    renderTasks();
+    applyFilters();
   } else {
     alert('Failed to register task');
   }
